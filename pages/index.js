@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import MainGrid from '../src/components/MainGrid';
 import Box from '../src/components/Box';
-import { AlurakutMenu, OrkutNostalgicIconSet } from '../src/lib/AluraCommons';
+import {
+  AlurakutMenu,
+  OrkutNostalgicIconSet,
+  AlurakutProfileSidebarMenuDefault,
+} from '../src/lib/AluraCommons';
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 function ProfileSideBar(props) {
   return (
@@ -11,6 +15,15 @@ function ProfileSideBar(props) {
         alt="foto perfil"
         style={{ borderRadius: '8px' }}
       />
+      <hr />
+      <p>
+        <a className="boxLink" href={`https://github.com/${props.githubUser}`}>
+          @{props.githubUser}
+        </a>
+      </p>
+
+      <hr />
+      <AlurakutProfileSidebarMenuDefault></AlurakutProfileSidebarMenuDefault>
     </Box>
   );
 }
@@ -37,6 +50,28 @@ export default function Home() {
           <Box>
             <h2 className="title">Bem Vindo(a)</h2>
             <OrkutNostalgicIconSet></OrkutNostalgicIconSet>
+          </Box>
+          <Box>
+            <h2 className="subTitle">O que você deseja fazer?</h2>
+            <form action="">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Qual vai ser o nome da sua comunidade"
+                  name="title"
+                  aria-label="Qual vai ser o nome da sua comunidade"
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Coloque uma url para sua capa"
+                  name="image"
+                  aria-label="Coloque uma url para sua capa"
+                />
+              </div>
+              <button>Criar Comunidade</button>
+            </form>
           </Box>
         </div>
         <div
