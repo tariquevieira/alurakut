@@ -73,6 +73,32 @@ export default function Home() {
       .then(function (respostaCompleta) {
         setSeguidores(respostaCompleta);
       });
+    //API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        // prettier-ignore
+        'Authorization': 'a074603783459a9b12a6a0cba6bada',
+        'Content-Type': 'application/json',
+        // prettier-ignore
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query {
+          allCommunities {
+            title
+            id
+            imageUrl
+          }
+        }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((respostaCompleta) => {
+        console.log(respostaCompleta);
+        const comunidadesVindaDoDato = respostaCompleta.data.allCommunities;
+        setComunidades(comunidadesVindaDoDato);
+      });
   }, []);
   return (
     <>
@@ -136,6 +162,22 @@ export default function Home() {
                     <a href={`/users/${itemAtual}`}>
                       <img src={`https://github.com/${itemAtual}.png`} />
                       <span>{itemAtual}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </ProfileRelationsBoxWrapper>
+          <ProfileRelationsBoxWrapper>
+            <h2 className="smallTitle">Comunidades ({comunidades.length}) </h2>
+
+            <ul>
+              {comunidades.map((itemAtual) => {
+                return (
+                  <li $key={itemAtual.id}>
+                    <a href={`/comunidades/${itemAtual.id}`}>
+                      <img src={itemAtual.imageUrl} />
+                      <span>{itemAtual.title}</span>
                     </a>
                   </li>
                 );
