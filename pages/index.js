@@ -28,6 +28,29 @@ function ProfileSideBar(props) {
     </Box>
   );
 }
+function ProfileRelationsBox(propriedades) {
+  const items = propriedades.items.splice(1, 6);
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {propriedades.title} ({propriedades.items.length}){' '}
+      </h2>
+
+      <ul>
+        {items.map((itemAtual) => {
+          return (
+            <li $key={itemAtual.id}>
+              <a href={`/users/${itemAtual.name}`}>
+                <img src={itemAtual.avatar_url} />
+                <span>{itemAtual.name}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  );
+}
 
 export default function Home() {
   let githubUser = 'tariquevieira';
@@ -40,7 +63,17 @@ export default function Home() {
     'marcobrunodev',
     'felipefialho',
   ];
-
+  const [seguidores, setSeguidores] = React.useState([]);
+  React.useEffect(function () {
+    //pegar dados do servidor
+    const seguidores = fetch('https://api.github.com/users/peas/followers')
+      .then(function (respostaDoServidor) {
+        return respostaDoServidor.json();
+      })
+      .then(function (respostaCompleta) {
+        setSeguidores(respostaCompleta);
+      });
+  }, []);
   return (
     <>
       <AlurakutMenu></AlurakutMenu>
@@ -109,22 +142,7 @@ export default function Home() {
               })}
             </ul>
           </ProfileRelationsBoxWrapper>
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">Comunidades ({comunidades.length}) </h2>
-
-            <ul>
-              {comunidades.map((itemAtual) => {
-                return (
-                  <li $key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}>
-                      <img src={itemAtual.image} />
-                      <span>{itemAtual.title}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ProfileRelationsBox title="Seguidores" items={seguidores} />
         </div>
       </MainGrid>
     </>
