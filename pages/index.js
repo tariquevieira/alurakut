@@ -122,8 +122,19 @@ export default function Home() {
                 const comunidade = {
                   id: new Date().toISOString,
                   title: formData.get('title'),
-                  image: formData.get('image'),
+                  imageUrl: formData.get('imageUrl'),
                 };
+
+                fetch('/api/comunidades', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(comunidade),
+                }).then(async (response) => {
+                  const dados = await response.json();
+                  console.log(dados);
+                });
                 const comunidadesAtualizadas = [...comunidades, comunidade];
                 setComunidades(comunidadesAtualizadas);
               }}
@@ -140,7 +151,7 @@ export default function Home() {
                 <input
                   type="text"
                   placeholder="Coloque uma url para sua capa"
-                  name="image"
+                  name="imageUrl"
                   aria-label="Coloque uma url para sua capa"
                 />
               </div>
